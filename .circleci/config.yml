@@ -5,8 +5,9 @@ jobs:
       - image: chromedp/chromium-builder
     steps:
       - checkout
+      - run: chown -R $USER:$USER /depot_tools
       - run: 
-         command: mkdir chromium && chown -R $USER:$USER /root/project/chromium
+         command: mkdir chromium
          working_directory: /root/project
       - run: 
          command: fetch --nohooks --no-history chromium
