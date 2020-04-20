@@ -2,7 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: chromedp/chromium-builder
     steps:
       - checkout
-      - run: echo "A first hello"
+      - run: cd ~
+      - run: mkdir chromium
+      - run: cd chromium
+      - run: fetch --nohooks chromium
+      - run: cd src 
+      - run: gclient runhooks
+      - run: gn gen out/Default
+      - run: autoninja -C out/Default chrome
