@@ -3,21 +3,22 @@ jobs:
   build:
     docker:
       - image: chromedp/chromium-builder
+        environment:
+          TAR_OPTIONS: --no-same-owner
     steps:
       - checkout
-      - run: chown -R $USER:$USER /depot_tools
       - run: 
-         command: mkdir chromium
-         working_directory: /root/project
+        command: mkdir chromium
+        working_directory: /root/project
       - run: 
-         command: fetch --nohooks --no-history chromium
-         working_directory: /root/project/chromium
+        command: fetch --nohooks --no-history chromium
+        working_directory: /root/project/chromium
       - run:
-         command: gclient runhooks
-         working_directory: /root/project/chromium/src
+        command: gclient runhooks
+        working_directory: /root/project/chromium/src
       - run:
-         command: gn gen out/Default
-         working_directory: /root/project/chromium/src
+        command: gn gen out/Default
+        working_directory: /root/project/chromium/src
       - run:
-         command: autoninja -C out/Default chrome
-         working_directory: /root/project/chromium/src
+        command: autoninja -C out/Default chrome
+        working_directory: /root/project/chromium/src
