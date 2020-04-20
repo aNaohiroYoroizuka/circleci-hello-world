@@ -5,11 +5,18 @@ jobs:
       - image: chromedp/chromium-builder
     steps:
       - checkout
-      - run: cd ~
-      - run: mkdir chromium
-      - run: cd chromium
-      - run: fetch --nohooks chromium
-      - run: cd src 
-      - run: gclient runhooks
-      - run: gn gen out/Default
-      - run: autoninja -C out/Default chrome
+      - run: 
+         command: mkdir chromium && chown -R $USER:$USER /root/project/chromium
+         working_directory: /root/project
+      - run: 
+         command: fetch --nohooks --no-history chromium
+         working_directory: /root/project/chromium
+      - run:
+         command: gclient runhooks
+         working_directory: /root/project/chromium/src
+      - run:
+         command: gn gen out/Default
+         working_directory: /root/project/chromium/src
+      - run:
+         command: autoninja -C out/Default chrome
+         working_directory: /root/project/chromium/src
