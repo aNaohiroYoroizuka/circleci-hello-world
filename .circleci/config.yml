@@ -3,17 +3,16 @@ jobs:
   build:
     docker:
       - image: chromedp/chromium-builder
+        user: ubuntu
         environment:
           TAR_OPTIONS: --no-same-owner
     steps:
       - checkout
+      - run: pwd
       - run: whoami
-      - run: ls -lha /usr/bin/python
-      - run: ls -lha /depot_tools
       - run: 
          command: mkdir chromium
-         working_directory: /root/project
-      - run: ls -lha /root/project/chromium
+         working_directory: /home/ubuntu
       - run: 
          command: fetch --nohooks --no-history chromium
          working_directory: /root/project/chromium
@@ -23,8 +22,6 @@ jobs:
       - run:
          command: gn gen out/Release --args="is_component_build=true is_debug=false enable_nacl=false symbol_level=0 remove_webcore_debug_symbols=true"
          working_directory: /root/project/chromium/src
-      - run: ls -lha /root/project/chromium/src/third_party/devtools-frontend/src/third_party/typescript/ts_library.py
-      - run: ls -lha /root/project/chromium/src/out/Release
       - run:
          command: autoninja -C out/Release chrome -j 4
          working_directory: /root/project/chromium/src
