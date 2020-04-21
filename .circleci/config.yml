@@ -3,16 +3,13 @@ jobs:
   build:
     docker:
       - image: chromedp/chromium-builder
-        user: ubuntu
         environment:
           TAR_OPTIONS: --no-same-owner
     steps:
       - checkout
-      - run: pwd
-      - run: whoami
       - run: 
          command: mkdir chromium
-         working_directory: /home/ubuntu
+         working_directory: /root/project
       - run: 
          command: fetch --nohooks --no-history chromium
          working_directory: /root/project/chromium
@@ -22,6 +19,7 @@ jobs:
       - run:
          command: gn gen out/Release --args="is_component_build=true is_debug=false enable_nacl=false symbol_level=0 remove_webcore_debug_symbols=true"
          working_directory: /root/project/chromium/src
+      - run: chmod 777 -R /root/project/chromium
       - run:
          command: autoninja -C out/Release chrome -j 4
          working_directory: /root/project/chromium/src
