@@ -17,8 +17,14 @@ jobs:
          command: gclient runhooks
          working_directory: /root/project/chromium/src
       - run:
-         command: gn gen out/Default
+         command: gn gen out/Release --args="is_component_build=true is_debug=false enable_nacl=false symbol_level=0 remove_webcore_debug_symbols=true"
          working_directory: /root/project/chromium/src
       - run:
-         command: autoninja -C out/Default chrome
+         command: autoninja -C out/Release chrome -j 4
+         working_directory: /root/project/chromium/src
+      - run:
+         command: gn gen out/Debug --args="is_component_build=true is_debug=true enable_nacl=false"
+         working_directory: /root/project/chromium/src
+      - run:
+         command: autoninja -C out/Debug chrome -j 4
          working_directory: /root/project/chromium/src
