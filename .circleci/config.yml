@@ -7,6 +7,8 @@ jobs:
           TAR_OPTIONS: --no-same-owner
     steps:
       - checkout
+      - run: whoami
+      - run: ls -lha /usr/bin/python
       - run: 
          command: mkdir chromium
          working_directory: /root/project
